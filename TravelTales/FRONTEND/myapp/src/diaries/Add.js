@@ -1,0 +1,54 @@
+import { Box, Button, FormLabel, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import { addPost } from '../api-helpers/helpers';
+import { useNavigate } from 'react-router-dom';
+
+const Add = () => {
+  const navigate= useNavigate();
+  const [inputs,setInputs]=useState({title:"",description:"",location:"",imageUrl:"",date:""});
+  const handleChange=(e)=>{
+    setInputs((prevState)=>({
+        ...prevState,
+        [e.target.name]:e.target.value,
+    }))
+  };  
+
+  const onResReceived=(data)=>{
+    console.log(data);
+    navigate("/diaries");
+  };
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log(inputs);
+    addPost(inputs).then(onResReceived()).catch((err)=>console.log(err));
+  };
+  return (
+    <Box display="flex" flexDirection={"column"} width="100%" height="100%" >
+        <Box display="flex" margin="auto" padding={2} >
+            <Typography fontWeight="bold" variant="h4" fontFamily={"dancing script"} >
+                Add Your Travel Tale
+            </Typography>
+            <TravelExploreIcon sx={{fontSize:"40px",paddingLeft:1,color:"lightcoral" }}/>
+        </Box>
+        <form onSubmit={handleSubmit} >
+            <Box borderRadius={11} bgcolor="lightblue" padding={3} display="flex" width="80%" margin="auto" flexDirection={"column"} >
+                <FormLabel sx={{fontFamily:"Quicksand"}}>Title</FormLabel>
+                <TextField onChange={handleChange} name="title" value={inputs.title} variant='standard' margin="normal"/>
+                <FormLabel sx={{fontFamily:"Quicksand"}}>Description</FormLabel>
+                <TextField onChange={handleChange} name="description" value={inputs.description} variant='standard' margin="normal"/>
+                <FormLabel sx={{fontFamily:"Quicksand"}}>Location</FormLabel>
+                <TextField onChange={handleChange} name="location" value={inputs.location} variant='standard' margin="normal"/>
+                <FormLabel sx={{fontFamily:"Quicksand"}}>Image URL</FormLabel>
+                <TextField onChange={handleChange} name="imageUrl" value={inputs.imageUrl} variant='standard' margin="normal"/>
+                <FormLabel sx={{fontFamily:"Quicksand"}}>Date</FormLabel>
+                <TextField onChange={handleChange} name="date" value={inputs.date} variant='standard' margin="normal"/>
+                <Button type='submit' variant='contained' sx={{width:"30%",margin:"auto",mt:3,borderRadius:"7px"}} color="error">Post</Button>
+            </Box>
+        </form>
+    </Box>
+  )
+}
+
+export default Add
