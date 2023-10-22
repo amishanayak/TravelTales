@@ -1,2 +1,2 @@
 # TravelTales
-A Travel Blog Website where users share their travel diaries
+A Travel MERN Stack Blog Website where users share their travel diaries
